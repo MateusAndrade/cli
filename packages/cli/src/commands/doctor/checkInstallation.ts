@@ -1,9 +1,15 @@
 import semver from 'semver';
 import commandExists from 'command-exists';
+import resolveGlobal from 'resolve-global';
 
 export enum PACKAGE_MANAGERS {
   YARN = 'YARN',
   NPM = 'NPM',
+}
+
+export enum GLOBAL_NATIVE_PACKAGES {
+  REACT_NATIVE = 'react-native',
+  REACT_NATIVE_CLI = 'react-native-cli',
 }
 
 const isSoftwareNotInstalled = async (command: string): Promise<boolean> => {
@@ -32,4 +38,14 @@ const doesSoftwareNeedToBeFixed = ({
   );
 };
 
-export {isSoftwareNotInstalled, doesSoftwareNeedToBeFixed};
+const isPackageGloballyInstalled = (
+  packageName: GLOBAL_NATIVE_PACKAGES,
+): boolean => {
+  return Boolean(resolveGlobal(packageName));
+};
+
+export {
+  isSoftwareNotInstalled,
+  isPackageGloballyInstalled,
+  doesSoftwareNeedToBeFixed,
+};
